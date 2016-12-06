@@ -17,6 +17,7 @@ private:
 	SDL_Point buttonClickedRC;
 	bool clicked = false;
 
+
 public:
 	cButton();
 

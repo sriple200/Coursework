@@ -17,7 +17,6 @@ class cFont
 private:
 	TTF_Font* theFont;
 
-
 public:
 	cFont();
 	~cFont();

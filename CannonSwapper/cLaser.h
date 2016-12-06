@@ -9,7 +9,6 @@ cBullet.h
 #define _CLASER_H
 #include "cSprite.h"
 
-
 class cLaser : public cSprite
 {
 private:

@@ -12,6 +12,7 @@ cBkGround.h
 class cBkGround : public cSprite
 {
 public:
+
 	void render();		// Default render function
 	void update();		// Update method
 };

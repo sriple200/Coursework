@@ -16,6 +16,7 @@ private:
 
 public:
 	cEnemy();
+
 	void update(double deltaTime);		// Player update method
 	void setEnemyVelocity(SDL_Point enemyVel);   // Sets the velocity for the enemy
 	SDL_Point getEnemyVelocity();				 // Gets the enemy velocity

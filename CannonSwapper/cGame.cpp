@@ -11,7 +11,6 @@ static cFontMgr* theFontMgr = cFontMgr::getInstance();
 static cSoundMgr* theSoundMgr = cSoundMgr::getInstance();
 static cButtonMgr* theButtonMgr = cButtonMgr::getInstance();
 
-
 /*
 =================================================================================
 Constructor

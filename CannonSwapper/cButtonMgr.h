@@ -12,7 +12,6 @@ cButtonMgr.h
 #include "GameConstants.h"
 #include "cButton.h"
 
-
 using namespace std;
 
 class cButtonMgr

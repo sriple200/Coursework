@@ -16,6 +16,7 @@ private:
 
 public:
 	cPlayer();
+
 	void update(double deltaTime);		// Player update method
 	void setPlayerVelocity (SDL_Point playerVel);   // Sets the velocity for the player
 	SDL_Point getPlayerVelocity();				 // Gets the player velocity
