@@ -29,10 +29,10 @@ void cEnemy::update(double deltaTime)
 	currentSpritePos.y += this->getSpriteTranslation().y * deltaTime;
 
 	this->setSpritePos({ currentSpritePos.x, currentSpritePos.y });
-	if (this->getSpritePos().x < 1024 && this->getSpritePos().x > 1 && this->getSpritePos().y < 768 && this->getSpritePos().y > 1)
+	/*if (this->getSpritePos().x < 1024 && this->getSpritePos().x > 1 && this->getSpritePos().y < 768 && this->getSpritePos().y > 1)
 	{
 	cout << "Enemy position - x: " << this->getSpritePos().x << " y: " << this->getSpritePos().y << " deltaTime: " << deltaTime << endl;
-	}
+	}*/
 	this->setBoundingRect(this->getSpritePos());
 
 	//if (this->getSpritePos().y == 384 && this->getSpritePos().x == 512)

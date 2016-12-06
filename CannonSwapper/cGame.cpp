@@ -52,17 +52,17 @@ void cGame::initialise(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	score = 0;
 
 	// Store the textures
-	textureName = { "BlueEnemy", "RedEnemy", "YellowEnemy" ,"GreenEnemy" ,"BlueLaser", "RedLaser", "YellowLaser", "GreenLaser" ,"BlueCannon", "RedCannon", "Skull", "Heart", "theBackground", "MenuBackground", "GameBackground" };
-	texturesToUse = { "Images\\BlueEnemy.png", "Images\\RedEnemy.png", "Images\\YellowEnemy.png", "Images\\GreenEnemy.png", "Images\\BlueLaser.png", "Images\\RedLaser.png", "Images\\YellowLaser.png","Images\\GreenLaser.png", "Images\\BlueCannon.png", "Images\\RedCannon.png", "Images\\Skull.png", "Images\\Heart.png", "Images\\Background.png", "Images\\MenuBackground.png", "Images\\GameBackground.png" };
+	textureName = { "BlueEnemy", "RedEnemy", "YellowEnemy" ,"GreenEnemy" ,"BlueLaser", "RedLaser", "YellowLaser", "GreenLaser" ,"BlueCannon", "theBackground", "MenuBackground", "GameBackground" };
+	texturesToUse = { "Images\\BlueEnemy.png", "Images\\RedEnemy.png", "Images\\YellowEnemy.png", "Images\\GreenEnemy.png", "Images\\BlueLaser.png", "Images\\RedLaser.png", "Images\\YellowLaser.png","Images\\GreenLaser.png", "Images\\BlueCannon.png", "Images\\Background.png", "Images\\MenuBackground.png", "Images\\GameBackground.png" };
 	for (int tCount = 0; tCount < textureName.size(); tCount++)
 	{
 		theTextureMgr->addTexture(textureName[tCount], texturesToUse[tCount]);
 	}
 
 	// Store the textures for the buttons
-	btnNameList = { "exit_btn", "load_btn", "menu_btn", "play_btn", "save_btn" };
-	btnTexturesToUse = { "Images\\ExitButton.png", "Images\\LoadButton.png", "Images\\MenuButton.png", "Images\\StartButton.png", "Images\\SaveButton.png" };
-	btnPos = { { 400, 375 }, { 400, 300 }, { 400, 300 }, { 200, 300 }, { 400, 300 } };
+	btnNameList = { "exit_btn", "menu_btn", "play_btn"};
+	btnTexturesToUse = { "Images\\ExitButton.png", "Images\\MenuButton.png", "Images\\StartButton.png" };
+	btnPos = { { 400, 375 }, { 400, 300 }, { 200, 300 }};
 
 	for (int bCount = 0; bCount < btnNameList.size(); bCount++)
 	{
@@ -202,7 +202,6 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	{
 	case MENU:
 	{
-
 		spriteMenuBkgd.render(theRenderer, NULL, NULL, spriteBkgd.getSpriteScale());
 		// Render the Title
 		tempTextTexture = theTextureMgr->getTexture("TitleTxt");
@@ -245,7 +244,6 @@ void cGame::render(SDL_Window* theSDLWND, SDL_Renderer* theRenderer)
 	break;
 	case PLAYING:
 	{
-
 		spriteGameBkgd.render(theRenderer, NULL, NULL, spriteBkgd.getSpriteScale());
 
 		// Render each blue enemy in the vector array
@@ -352,11 +350,17 @@ void cGame::update(double deltaTime)
 {
 	switch (theGameState)
 	{
+	case MENU:
+	{
+		theGameState = theButtonMgr->getBtn("play_btn")->update(theGameState, PLAYING, theAreaClicked);
+		theGameState = theButtonMgr->getBtn("exit_btn")->update(theGameState, QUIT, theAreaClicked);
+	}
+	break;
+
 		case PLAYING:
 		{
 			// Update the player position
 			thePlayer.update(deltaTime);
-
 
 			// Update the visibility and position of each blue enemy
 			vector<cEnemy*>::iterator bEnemyIterator = bEnemies.begin();
@@ -563,7 +567,6 @@ void cGame::update(double deltaTime)
 					{
 						// if a collision set the laser and enemy to false
 						(*gEnemyIterator)->setActive(false);
-						(*gEnemyIterator)->setActive(false);
 						(*glaserIterator)->setActive(false);
 						theSoundMgr->getSnd("enemyDeath")->play(0);
 						score += 100; //increment score by 100
@@ -582,6 +585,8 @@ void cGame::update(double deltaTime)
 					{
 						// if a collision set the laser and enemy to false
 						(*gEnemyIterator)->setActive(false);
+						theSoundMgr->getSnd("playerDeath")->play(0);
+						theGameState = END;
 					}
 				}
 			}
@@ -595,6 +600,8 @@ void cGame::update(double deltaTime)
 					{
 						// if a collision set the laser and enemy to false
 						(*yEnemyIterator)->setActive(false);
+						theSoundMgr->getSnd("playerDeath")->play(0);
+						theGameState = END;
 					}
 				}
 			}
@@ -610,6 +617,7 @@ void cGame::update(double deltaTime)
 						// if a collision set the laser and enemy to false
 						(*rEnemyIterator)->setActive(false);
 						theSoundMgr->getSnd("playerDeath")->play(0);
+						theGameState = END;
 					}
 				}
 			}
@@ -624,21 +632,26 @@ void cGame::update(double deltaTime)
 					{
 						// if a collision set the laser and enemy to false
 						(*bEnemyIterator)->setActive(false);
+						theSoundMgr->getSnd("playerDeath")->play(0);
+						theGameState = END;
 					}
 				}
 			}
-
 		}
-
-		case MENU:
-		{
-			theGameState = theButtonMgr->getBtn("play_btn")->update(theGameState, PLAYING, theAreaClicked);
-		}
-
+		break;
 		case END:
 		{
 			theGameState = theButtonMgr->getBtn("menu_btn")->update(theGameState, MENU, theAreaClicked);
+			theGameState = theButtonMgr->getBtn("exit_btn")->update(theGameState, QUIT, theAreaClicked);
 		}
+		break;
+		case QUIT:
+		{
+			loop = false;
+		}
+		break;
+		default:
+			break;
 	}
 }
 
